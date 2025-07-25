@@ -1,4 +1,4 @@
-<!DOCTYPE html >
+<!DOCTYPE html>
 <html
         xmlns="http://www.w3.org/1999/xhtml"
         xmlns:ui="jakarta.faces.facelets"
@@ -6,45 +6,92 @@
         xmlns:p="http://primefaces.org/ui"
 >
 <h:head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <meta name="description" content="${description}"/>
-    <meta name="keywords" content="${keywords}"/>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="${description}" />
+    <meta name="keywords" content="${keywords}" />
 
     <title>${title}</title>
 
-    <ui:insert name="externalstyles">
-    </ui:insert>
+    <ui:insert name="externalstyles" />
 
     <style>
         ${internalstyles}
+
+        @keyframes fadeInDown {
+            0% {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .glass-navbar-container {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            padding: 1rem 2rem;
+            border-radius: 1rem;
+            margin: 2rem 0;
+            max-width: 100%;
+            overflow-x: auto;
+            animation: fadeInDown 0.6s ease forwards;
+        }
+
+        .glass-navbar {
+            background: transparent !important;
+            border: none !important;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1.25rem;
+        }
+
+        .glass-navbar .ui-menuitem-link {
+            background: transparent !important;
+            color: #f1f5f9 !important;
+            font-weight: 600;
+            font-size: 1.05rem;
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            transition: background 0.3s ease, color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .glass-navbar .ui-menuitem-link:hover {
+            background: lightgreen !important;
+            color: white !important;
+        }
+
+        .glass-navbar .ui-icon {
+            font-size: 1.2rem;
+            margin-right: 0.25rem;
+            color: white;
+        }
     </style>
 
-    <h:outputStylesheet library="webjars" name="primeflex/3.3.1/primeflex.min.css"/>
-    <h:outputStylesheet library="webjars" name="primeflex/3.3.1/themes/primeone-light.css"/>
+    <h:outputStylesheet library="webjars" name="primeflex/3.3.1/primeflex.min.css" />
+    <h:outputStylesheet library="webjars" name="primeflex/3.3.1/themes/primeone-light.css" />
 
-    <ui:insert name="headscripts">
-    </ui:insert>
+    <ui:insert name="headscripts" />
 </h:head>
 
-<h:body style="padding: 60px; min-height: 2000px;">
+<h:body style="background-color: #111827; color: #ffffff; padding: 60px; min-height: 100vh;">
 
     <header>
-        <div class="card" style="margin: 2rem;">
+        <div class="glass-navbar-container">
             <h:form>
-
-
-                <p:menubar>
-                    <!-- https://www.primefaces.org/showcase/icons.xhtml?jfwid=a2b2f -->
-                    <p:menuitem value="Home" icon="pi pi-home" style="font-size: large; font-weight: bold" url="#{request.contextPath}/index.xhtml"/>
-                    <p:menuitem value="Key Switch Library" icon="pi pi-calendar" style="font-size: large; font-weight: bold"  url="#{request.contextPath}/keyswitch/crud.xhtml"/>
-                    <!--                <p:submenu label="Students" icon="pi pi-file">-->
-                    <!--                    <p:menuitem value="List" icon="pi pi-list"-->
-                    <!--                                url="#{request.contextPath}/students/index.xhtml"/>-->
-                    <!--                    <p:menuitem value="Create" icon="pi pi-plus"-->
-                    <!--                                url="#{request.contextPath}/students/create.xhtml"/>-->
-                    <!--                </p:submenu>-->
-
+                <p:menubar styleClass="glass-navbar">
+                    <p:menuitem value="Home" icon="pi pi-home" url="#{request.contextPath}/index.xhtml"/>
+                    <p:menuitem value="Key Switch Library" icon="pi pi-sliders-h" url="#{request.contextPath}/keyswitch/crud.xhtml"/>
+                    <p:menuitem value="About" icon="pi pi-info-circle" url="#{request.contextPath}/about.xhtml"/>
+                    <p:menuitem value="Contact" icon="pi pi-envelope" url="#{request.contextPath}/contact.xhtml"/>
                 </p:menubar>
             </h:form>
         </div>
@@ -56,25 +103,40 @@
         </ui:insert>
     </main>
 
-    <footer>
-        <hr/>
-        <p>This
-            <a href="https://eclipse-ee4j.github.io/jakartaee-tutorial" target="_blanks">Jakarta EE 10</a>
-            web application is built using
-            <a href="https://www.jetbrains.com/idea/" target="_blanks">IntelliJ IDEA</a>,
-            <a href="https://jakarta.ee/specifications/faces/4.0/jakarta-faces-4.0.html" target="_blanks">Jakarta
-                Faces</a>,
-            <a href="https://omnifaces.org/" target="_blanks">OmniFaces</a>,
-            <a href="https://www.primefaces.org/showcase" target="_blanks">PrimeFaces</a>,
-            <a href="https://www.primefaces.org/primeflex/" target="_blanks">PrimeFlex</a>,
-            and runs on
-            <a href="http://www.wildfly.org/" target="_blanks">WildFly</a>
-        </p>
+    <footer style="margin-top: 4rem;">
+        <div style="
+        background: rgba(255, 255, 255, 0.04);
+        border-radius: 1rem;
+        backdrop-filter: blur(20px) saturate(180%);
+        -webkit-backdrop-filter: blur(20px) saturate(180%);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        padding: 2rem;
+        color: #cbd5e1;
+        font-size: 0.95rem;
+        text-align: center;
+    ">
+            <p style="margin-bottom: 1rem;">
+                Built with ❤️ using:
+            </p>
+
+            <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 1.5rem;">
+                <li><a href="https://jakarta.ee/specifications/faces/4.0/jakarta-faces-4.0.html" target="_blank" style="color: #38bdf8; text-decoration: none;">Jakarta Faces</a></li>
+                <li><a href="https://omnifaces.org/" target="_blank" style="color: #38bdf8; text-decoration: none;">OmniFaces</a></li>
+                <li><a href="https://www.primefaces.org/showcase" target="_blank" style="color: #38bdf8; text-decoration: none;">PrimeFaces</a></li>
+                <li><a href="https://www.primefaces.org/primeflex/" target="_blank" style="color: #38bdf8; text-decoration: none;">PrimeFlex</a></li>
+                <li><a href="https://www.jetbrains.com/idea/" target="_blank" style="color: #38bdf8; text-decoration: none;">IntelliJ IDEA</a></li>
+                <li><a href="https://tomcat.apache.org/" target="_blank" style="color: #38bdf8; text-decoration: none;">Apache Tomcat</a></li>
+            </ul>
+
+            <hr style="margin: 2rem 0; border-color: rgba(255, 255, 255, 0.1);" />
+
+            <p style="font-size: 0.85rem; color: #94a3b8;">
+                &#169; #{currentYear} MechDex. All rights reserved.
+            </p>
+        </div>
     </footer>
 
-    <ui:insert name="bodyscripts">
-    </ui:insert>
-
+    <ui:insert name="bodyscripts" />
 </h:body>
-
 </html>

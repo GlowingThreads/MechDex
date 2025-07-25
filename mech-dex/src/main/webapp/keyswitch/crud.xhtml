@@ -1,17 +1,54 @@
-
-
 <ui:composition
         xmlns="http://www.w3.org/1999/xhtml"
         xmlns:ui="jakarta.faces.facelets"
         xmlns:f="jakarta.faces.core"
         xmlns:h="jakarta.faces.html"
         xmlns:p="http://primefaces.org/ui"
-        template="/WEB-INF/faces-templates/layout.xhtml"
->
-    <ui:param name="title" value="FirebaseRTDB KeySwitch - CRUD"/>
+        template="/WEB-INF/faces-templates/layout.xhtml">
 
-    <ui:param name="internalstyles"
-              value=".KeySwitchs-table-header { display: flex; align-items:center; justify-content: space-between; flex-wrap: wrap; }"/>
+    <ui:param name="title" value="FirebaseRTDB KeySwitch - CRUD"/>
+    <ui:param name="internalstyles" value="
+        .KeySwitchs-table-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        .ui-datatable thead th {
+            background-color: #1e293b !important;
+            color: #f1f5f9 !important;
+            font-weight: 600;
+            padding: 1rem !important;
+            font-size: 1.05rem;
+        }
+        .ui-datatable tbody td {
+            padding: 1rem !important;
+            font-size: 1rem;
+        }
+        .ui-datatable tbody tr:hover {
+            background-color: #e0f2fe !important;
+            transition: background-color 0.2s ease;
+        }
+        .p-button {
+            border-radius: 9999px !important;
+            transition: all 0.2s ease-in-out;
+        }
+        .p-button:hover {
+            transform: scale(1.05);
+            filter: brightness(1.1);
+        }
+        .p-toolbar {
+            background-color: #0f172a !important;
+            border-radius: 1rem;
+            padding: 1rem;
+            margin-top: 1rem;
+            color: #f8fafc;
+        }
+        .p-toolbar .ui-button-success {
+            font-size: 1rem;
+            padding: 0.75rem 1.25rem;
+        }
+    "/>
 
     <ui:define name="maincontent">
 
@@ -23,7 +60,7 @@
                     <p:autoUpdate/>
                 </p:growl>
 
-                <p:toolbar style="margin-top: 1rem; margin-bottom: 1rem">
+                <p:toolbar>
                     <p:toolbarGroup>
                         <p:commandButton id="createButton"
                                          value="Add New Switch"
@@ -46,13 +83,14 @@
                              rowKey="#{currentKeySwitch.id}"
                              paginator="true" rows="10"
                              paginatorPosition="bottom"
-                                stripedRows="true">
+                             stripedRows="true"
+                             currentPageReportTemplate="Showing {startRecord} to {endRecord} of {totalRecords}">
 
                     <f:facet name="header">
-                        <div class="KeySwitchs-table-header" >
+                        <div class="KeySwitchs-table-header">
                             <div style="display:flex; flex-direction: column">
-                            <span style="font-weight: bold; font-size: larger;">Key Switches </span>
-                            <span style="font-size: small; font-weight: lighter; display:flex; justify-content: space-around">(the search fields here will browse specific parameter categories use the general search on the right if you want more broad results!)</span>
+                                <span style="font-weight: bold; font-size: larger; color: #f8fafc">Key Switches</span>
+                                <span style="font-size: small; font-weight: lighter; color: #cbd5e1">Use filters or search on the right.</span>
                             </div>
                             <span class="filter-container ui-input-icon-left">
                                 <i class="pi pi-search"></i>
@@ -61,7 +99,6 @@
                             </span>
                         </div>
                     </f:facet>
-
 
                     <p:column headerText="Switch Name" filterBy="#{currentKeySwitch.switchName}">
                         <h:outputText value="#{currentKeySwitch.switchName}"/>
@@ -105,74 +142,54 @@
             </h:form>
 
             <h:form id="dialogs">
-                <p:dialog header="KeySwitch Details" showEffect="fade" modal="true" widgetVar="manageKeySwitchDialog"
-                          responsive="true">
-
-                    <p:messages id="messages">
-                        <p:autoUpdate/>
-                    </p:messages>
+                <p:dialog header="KeySwitch Details" showEffect="fade" modal="true"
+                          widgetVar="manageKeySwitchDialog" responsive="true">
+                    <p:messages id="messages"><p:autoUpdate/></p:messages>
 
                     <p:outputPanel id="manage-KeySwitch-content" class="ui-fluid">
                         <p:outputPanel rendered="#{not empty currentKeySwitchCrudView.selectedKeySwitch}">
-                            <!-- TODO: Add input field for each editable property of the entity -->
                             <div class="field">
-                                <p:outputLabel for="@next">Switch Name</p:outputLabel>
-                                <p:inputText
-                                        id="switchName"
-                                        value="#{currentKeySwitchCrudView.selectedKeySwitch.switchName}">
-                                </p:inputText>
+                                <p:outputLabel for="switchName" value="Switch Name"/>
+                                <p:inputText id="switchName"
+                                             value="#{currentKeySwitchCrudView.selectedKeySwitch.switchName}"/>
                             </div>
                             <div class="field">
-                                <p:outputLabel for="@next">Manufacturer</p:outputLabel>
-                                <p:inputText
-                                        id="company"
-                                        value="#{currentKeySwitchCrudView.selectedKeySwitch.company}">
-                                </p:inputText>
+                                <p:outputLabel for="company" value="Manufacturer"/>
+                                <p:inputText id="company"
+                                             value="#{currentKeySwitchCrudView.selectedKeySwitch.company}"/>
                             </div>
                             <div class="field">
-                                <p:outputLabel for="@next">Switch Type</p:outputLabel>
-                                <p:inputText
-                                        id="switchType"
-                                        value="#{currentKeySwitchCrudView.selectedKeySwitch.switchType}">
-                                </p:inputText>
+                                <p:outputLabel for="switchType" value="Switch Type"/>
+                                <p:inputText id="switchType"
+                                             value="#{currentKeySwitchCrudView.selectedKeySwitch.switchType}"/>
                             </div>
                             <div class="field">
-                                <p:outputLabel for="@next">Actuation Force</p:outputLabel>
-                                <p:inputText
-                                        id="actuationForce"
-                                        value="#{currentKeySwitchCrudView.selectedKeySwitch.actuationForce}">
-                                </p:inputText>
+                                <p:outputLabel for="actuationForce" value="Actuation Force"/>
+                                <p:inputText id="actuationForce"
+                                             value="#{currentKeySwitchCrudView.selectedKeySwitch.actuationForce}"/>
                             </div>
                             <div class="field">
-                                <p:outputLabel for="@next">Switch Travel</p:outputLabel>
-                                <p:inputText
-                                        id="switchTravel"
-                                        value="#{currentKeySwitchCrudView.selectedKeySwitch.switchTravel}">
-
-                                </p:inputText>
+                                <p:outputLabel for="switchTravel" value="Switch Travel"/>
+                                <p:inputText id="switchTravel"
+                                             value="#{currentKeySwitchCrudView.selectedKeySwitch.switchTravel}"/>
                             </div>
-
                         </p:outputPanel>
                     </p:outputPanel>
 
                     <f:facet name="footer">
-                        <p:commandButton value="Save"
-                                         icon="pi pi-check"
+                        <p:commandButton value="Save" icon="pi pi-check"
                                          actionListener="#{currentKeySwitchCrudView.onSave}"
                                          update="manage-KeySwitch-content"
                                          process="manage-KeySwitch-content @this"/>
 
-                        <p:commandButton value="Generate Data"
-                                         icon="pi pi-calculator"
+                        <p:commandButton value="Generate Data" icon="pi pi-calculator"
                                          actionListener="#{currentKeySwitchCrudView.onGenerateData}"
                                          update="manage-KeySwitch-content"
                                          process="@this"/>
 
-                        <p:commandButton value="Cancel"
-                                         icon="pi pi-times"
+                        <p:commandButton value="Cancel" icon="pi pi-times"
                                          onclick="PF('manageKeySwitchDialog').hide()"
-                                         class="ui-button-secondary"
-                                         type="button"/>
+                                         class="ui-button-secondary" type="button"/>
                     </f:facet>
                 </p:dialog>
 
@@ -185,16 +202,7 @@
                     <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
                                      onclick="PF('deleteKeySwitchDialog').hide()"/>
                 </p:confirmDialog>
-
-                <p:confirmDialog global="true" showEffect="fade" width="300">
-                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check"/>
-                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-secondary"
-                                     icon="pi pi-times"/>
-                </p:confirmDialog>
             </h:form>
-
         </div>
-
     </ui:define>
-
 </ui:composition>

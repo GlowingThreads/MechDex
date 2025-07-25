@@ -2,64 +2,322 @@
         xmlns="http://www.w3.org/1999/xhtml"
         xmlns:ui="jakarta.faces.facelets"
         xmlns:h="jakarta.faces.html"
+        xmlns:f="jakarta.faces.core"
         xmlns:p="http://primefaces.org/ui"
-        template="/WEB-INF/faces-templates/layout.xhtml"
->
+        template="/WEB-INF/faces-templates/layout.xhtml">
 
-    <ui:param name="title" value=""/>
+    <ui:param name="title" value="MechDex - Your Mechanical Switch Database" />
 
-    <ui:define name="maincontent">
-        <!-- If FacesContext message sent from init() method annotated with @PostConstruct in the Faces backing bean class are not shown on page:
-            1) Remove the @PostConstruct annotation from the Faces backing bean class
-            2) Add metadata tag shown below to execute the init() method
-        <f:metadata>
-            <f:viewParam name="dummy" />
-            <f:event type="postInvokeAction" listener="#{currentBeanView.init}" />
-        </f:metadata>
-        -->
+    <ui:param name="internalstyles" value="
+        body {
+            background-color: #0f172a;
+            color: #ffffff;
+        }
 
-        <h1>Welcome to Bryce Fishers Mechanical Keyboard Switch Application</h1>
-<div style="display: flex">
-        <div class="ui-card"
-             style="padding:2rem; max-width: fit-content; margin:3rem; elevation: above; background-color: lavender; display:flex">
-            <div>
-                <p:graphicImage value="#{resource['img/me-brycefisher.jpg']}" alt="Picture of Bryce"
-                                style="max-height: 20rem; "/>
-            </div>
-            <div style="padding-left: 2rem">
-                <h2 style="color: darkslateblue; font-size: larger; font-weight: bold; align-items: center">About Me</h2>
-                <p> I have 2 hairless cats and like to build mechanical keyboards.</p>
-            </div>
+        .hero-section {
+            background: linear-gradient(135deg, rgba(28,41,70,0.95) 0%, rgba(19,27,44,0.98) 100%);
+            border-radius: 24px;
+            padding: 3rem 2rem;
+            margin-bottom: 2.5rem;
+            position: relative;
+            overflow: hidden;
+        }
 
-        </div>
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background: url('#{resource['img/mech-swtich.jpg']}') no-repeat right center;
+            opacity: 0.07;
+            background-size: cover;
+            z-index: 0;
+        }
 
-        <div class="ui-card"
-             style="padding:2rem; margin:3rem; elevation: above; background-color: lightgrey; display: flex;">
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
 
-            <div>
-                <p:graphicImage value="#{resource['img/mech-swtich.jpg']}" alt="Picture of Key Switch"
-                                style="max-height: 20rem; "/>
-            </div>
-            <div style="padding-left: 2rem">
-                <h2 style="color: darkslateblue; font-size: larger; font-weight: bold; align-items: center">Keboard Switch Data</h2>
-                <p> Please browse the link to the switch library for keyswitch information. This information contains data on the replacable mechanical switches in custom mechanical keyboards.</p>
-            </div>
-        </div>
-</div>
-        <!--Display all messages in FacesContext -->
-        <p:messages id="messages">
-            <p:autoUpdate/>
-        </p:messages>
+        .flex.gap-3.mr-5 {
+            gap: 1.5rem !important;
+            flex-wrap: wrap;
+        }
 
+        .feature-grid {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 1.5rem;
+            overflow-x: auto;
+            padding-bottom: 1rem;
+        }
 
-        <!--Example on conditional rendering, you will need to change the rendered attribute value to an EL value expression -->
-        <p:outputPanel id="outputPanel">
-            <h:outputText
-                    rendered="false"
-                    value="Hello Faces World!"/>
-        </p:outputPanel>
+        .feature-grid .col-12 {
+            flex: 0 0 auto;
+            width: 300px;
+        }
 
+        .glass-card-dark {
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 28px;
+            backdrop-filter: blur(28px) saturate(180%);
+            -webkit-backdrop-filter: blur(28px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            box-shadow:
+                0 12px 24px rgba(0, 0, 0, 0.15),
+                0 0 0 1px rgba(255, 255, 255, 0.05),
+                inset 0 2px 4px rgba(255, 255, 255, 0.05),
+                inset 0 -2px 6px rgba(0, 0, 0, 0.15),
+                inset 0 0 35px rgba(255, 255, 255, 0.04);
+            padding: 2rem;
+            color: #e1e7ef;
+            position: relative;
+            overflow: hidden;
+        }
 
-    </ui:define>
+        .glass-card-dark::before {
+            content: '';
+            position: absolute;
+            top: -12px;
+            left: -12px;
+            width: 150%;
+            height: 150%;
+            background: radial-gradient(circle at top left, rgba(255,255,255,0.25), transparent 60%);
+            opacity: 0.15;
+            z-index: 0;
+        }
+
+        .glass-card-dark::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.3), transparent, rgba(255, 255, 255, 0.1));
+            z-index: 1;
+        }
+
+        .feature-card {
+            transition: transform 0.2s ease-in-out;
+            cursor: pointer;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-lighter-color) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .switch-grid {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 1.5rem;
+            overflow-x: auto;
+            padding-bottom: 1rem;
+        }
+
+        .switch-card {
+            width: 280px;
+            flex: 0 0 auto;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 28px;
+            padding: 1.5rem;
+            backdrop-filter: blur(28px) saturate(180%);
+            -webkit-backdrop-filter: blur(28px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            box-shadow:
+                0 12px 24px rgba(0, 0, 0, 0.15),
+                0 0 0 1px rgba(255, 255, 255, 0.05),
+                inset 0 2px 4px rgba(255, 255, 255, 0.05),
+                inset 0 -2px 6px rgba(0, 0, 0, 0.15),
+                inset 0 0 35px rgba(255, 255, 255, 0.04);
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .switch-card:hover {
+            background: rgba(255, 255, 255, 0.12);
+            transform: translateY(-2px);
+        }
+
+        .switch-card::before {
+            content: '';
+            position: absolute;
+            top: -12px;
+            left: -12px;
+            width: 150%;
+            height: 150%;
+            background: radial-gradient(circle at top left, rgba(255,255,255,0.25), transparent 60%);
+            opacity: 0.15;
+            z-index: 0;
+        }
+
+        .switch-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.3), transparent, rgba(255, 255, 255, 0.1));
+            z-index: 1;
+        }
+
+        .enthusiast-row {
+            display: flex;
+            flex-direction: row;
+            gap: 2rem;
+            align-items: center;
+            margin-top: 2rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .enthusiast-img {
+            flex: 0 0 auto;
+        }
+
+        .enthusiast-photo {
+            max-width: 250px;
+            border-radius: 1rem;
+            filter: grayscale(0.2) contrast(1.1);
+        }
+
+        .enthusiast-text {
+            flex: 1 1 0;
+            padding: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .hero-section {
+                padding: 2rem 1rem;
+            }
+
+            .feature-grid {
+                gap: 1rem;
+            }
+
+            .enthusiast-row {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .enthusiast-photo {
+                width: 100%;
+                max-width: 100%;
+            }
+        }
+    "/>
+
+<ui:define name="maincontent">
+            <!-- Hero Section -->
+            <section class="hero-section">
+                <div class="hero-content">
+                    <div class="grid">
+                        <div class="col-4 lg:col-7">
+                            <h1 class="text-6xl font-bold mb-4" style="background: linear-gradient(135deg, #b1d3ff 0%, #4ecdc4 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                                MechDex
+                            </h1>
+                            <p class="text-xl line-height-3 mb-5" style="color: #e6f3ff;">
+                                Your comprehensive database for mechanical keyboard switches.
+                                Compare, analyze, and find your perfect switch.
+                            </p>
+                            <div class="flex gap-3 mr-5">
+                                <p:button value="Explore Switches" icon="pi pi-search"
+                                          styleClass="p-button-lg p-button-primary"
+                                          href="/keyswitch/crud.xhtml"/>
+                                <p:button value="Learn More" icon="pi pi-info-circle"
+                                          styleClass="p-button-lg p-button-outlined p-button-secondary"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Features Section -->
+            <section class="mb-6">
+                <div class="feature-grid">
+                    <div class="col-12 md:col-4">
+                        <div class="glass-card-dark feature-card p-4 h-full">
+                            <i class="pi pi-database feature-icon"></i>
+                            <h3 class="text-xl font-bold mb-3" style="color: #4ecdc4;">Comprehensive Database</h3>
+                            <p class="line-height-3" style="color: #b0b8cf;">
+                                Access detailed specifications, measurements, and user experiences for hundreds of switches.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-12 md:col-4">
+                        <div class="glass-card-dark feature-card p-4 h-full">
+                            <i class="pi pi-sliders-h feature-icon"></i>
+                            <h3 class="text-xl font-bold mb-3" style="color: #f9aa33;">Advanced Comparison</h3>
+                            <p class="line-height-3" style="color: #b0b8cf;">
+                                Compare switches side-by-side with our intuitive comparison tools and detailed metrics.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-12 md:col-4">
+                        <div class="glass-card-dark feature-card p-4 h-full">
+                            <i class="pi pi-users feature-icon"></i>
+                            <h3 class="text-xl font-bold mb-3" style="color: #3fa4fa;">Community Driven</h3>
+                            <p class="line-height-3" style="color: #b0b8cf;">
+                                Join our community of enthusiasts to share experiences and find your perfect switch.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Latest Switches Section -->
+            <section class="mb-6">
+                <div class="flex align-items-center justify-content-between mb-4">
+                    <h2 class="text-2xl font-bold m-0" style="color: #4ecdc4;">Latest Additions</h2>
+                    <p:button value="View All" icon="pi pi-arrow-right"
+                              styleClass="p-button-text"
+                              href="/keyswitch/crud.xhtml"/>
+                </div>
+                <div class="switch-grid">
+                    <ui:repeat value="#{currentKeySwitchCrudView.keySwitchs}" var="keySwitch">
+                        <div class="switch-card">
+                            <h4 class="text-xl font-bold mb-2" style="color: #cbeafe;">#{keySwitch.switchName}</h4>
+                            <p:tag styleClass="mb-3" severity="info" value="#{keySwitch.company}" />
+                            <div class="flex align-items-center gap-2 mt-3">
+                                <p:tag severity="warning" value="#{keySwitch.actuationForce}" />
+                                <p:tag severity="info" value="#{keySwitch.switchType}" />
+                            </div>
+                        </div>
+                    </ui:repeat>
+                </div>
+            </section>
+
+            <!-- About Section -->
+            <section>
+                <div class="enthusiast-row">
+                    <div class="enthusiast-img">
+                        <p:graphicImage value="#{resource['img/me-brycefisher.jpg']}" styleClass="enthusiast-photo"/>
+                    </div>
+                    <div class="enthusiast-text glass-card-dark">
+                        <h2 class="text-2xl font-bold mb-3" style="color: #acd7ff;">Built by Enthusiasts, for Enthusiasts</h2>
+                        <p class="line-height-3 mb-4" style="color: #cedafc;">
+                            MechDex was created to provide the mechanical keyboard community with accurate,
+                            detailed information about switches. Our goal is to help you make informed decisions
+                            about your next build or modification project.
+                        </p>
+                        <p:button value="Start Exploring" icon="pi pi-arrow-right"
+                                  styleClass="p-button-secondary"
+                                  href="/keyswitch/crud.xhtml"/>
+                    </div>
+                </div>
+            </section>
+        </ui:define>
 
 </ui:composition>
