@@ -1,0 +1,44 @@
+// Firebase Realtime Database stores JSON data in a JSON Tree structure
+
+### Push new JSON data to the path
+POST https://dmit2015-1242-a02-bfisher20-default-rtdb.firebaseio.com/KeySwitch.json
+Content-Type: application/json
+
+{
+  "switchName": "Baby Komodo",
+  "switchType": "Linear",
+  "company": "Bamboo",
+  "actuationForce": "55ug",
+  "switchTravel": "2.2mm"
+}
+
+### Read JSON data by path
+GET https://dmit2015-1242-a02-bfisher20-default-rtdb.firebaseio.com/KeySwitch.json
+
+### Read JSON data by path and primary key value
+@primaryKeyValue = -OHFDeHtPL7_zueeopLa
+GET https://dmit2015-1242-a02-bfisher20-default-rtdb.firebaseio.com/KeySwitch/{{primaryKeyValue}}.json
+
+### Write JSON data - will replace all properties with the properties in the request body - if you miss a property it will be removed
+PUT https://dmit2015-1242-a02-bfisher20-default-rtdb.firebaseio.com/KeySwitch/{{primaryKeyValue}}.json
+Content-Type: application/json
+
+{
+  "switchName": "Baby Dragon",
+  "switchType": "Linear",
+  "company": "Gateron",
+  "actuationForce": "55ng",
+  "switchTravel": "2.2mm"
+}
+
+### Remove JSON data - use this if you want to delete data
+@deletePrimaryKeyValue = replace-with-actual-value
+DELETE https://dmit2015-1242-a02-bfisher20-default-rtdb.firebaseio.com/KeySwitch/{{deletePrimaryKeyValue}}.json
+
+### Update data - use this if you want to update some of the properties but not all of them
+PATCH https://dmit2015-1242-a02-bfisher20-default-rtdb.firebaseio.com/KeySwitch/{{primaryKeyValue}}.json
+Content-Type: application/json
+
+{
+  "propertyName": "propertyValue"
+}

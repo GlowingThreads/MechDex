@@ -1,0 +1,65 @@
+<ui:composition
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:ui="jakarta.faces.facelets"
+        xmlns:h="jakarta.faces.html"
+        xmlns:p="http://primefaces.org/ui"
+        template="/WEB-INF/faces-templates/layout.xhtml"
+>
+
+    <ui:param name="title" value=""/>
+
+    <ui:define name="maincontent">
+        <!-- If FacesContext message sent from init() method annotated with @PostConstruct in the Faces backing bean class are not shown on page:
+            1) Remove the @PostConstruct annotation from the Faces backing bean class
+            2) Add metadata tag shown below to execute the init() method
+        <f:metadata>
+            <f:viewParam name="dummy" />
+            <f:event type="postInvokeAction" listener="#{currentBeanView.init}" />
+        </f:metadata>
+        -->
+
+        <h1>Welcome to Bryce Fishers Mechanical Keyboard Switch Application</h1>
+<div style="display: flex">
+        <div class="ui-card"
+             style="padding:2rem; max-width: fit-content; margin:3rem; elevation: above; background-color: lavender; display:flex">
+            <div>
+                <p:graphicImage value="#{resource['img/me-brycefisher.jpg']}" alt="Picture of Bryce"
+                                style="max-height: 20rem; "/>
+            </div>
+            <div style="padding-left: 2rem">
+                <h2 style="color: darkslateblue; font-size: larger; font-weight: bold; align-items: center">About Me</h2>
+                <p> I have 2 hairless cats and like to build mechanical keyboards.</p>
+            </div>
+
+        </div>
+
+        <div class="ui-card"
+             style="padding:2rem; margin:3rem; elevation: above; background-color: lightgrey; display: flex;">
+
+            <div>
+                <p:graphicImage value="#{resource['img/mech-swtich.jpg']}" alt="Picture of Key Switch"
+                                style="max-height: 20rem; "/>
+            </div>
+            <div style="padding-left: 2rem">
+                <h2 style="color: darkslateblue; font-size: larger; font-weight: bold; align-items: center">Keboard Switch Data</h2>
+                <p> Please browse the link to the switch library for keyswitch information. This information contains data on the replacable mechanical switches in custom mechanical keyboards.</p>
+            </div>
+        </div>
+</div>
+        <!--Display all messages in FacesContext -->
+        <p:messages id="messages">
+            <p:autoUpdate/>
+        </p:messages>
+
+
+        <!--Example on conditional rendering, you will need to change the rendered attribute value to an EL value expression -->
+        <p:outputPanel id="outputPanel">
+            <h:outputText
+                    rendered="false"
+                    value="Hello Faces World!"/>
+        </p:outputPanel>
+
+
+    </ui:define>
+
+</ui:composition>

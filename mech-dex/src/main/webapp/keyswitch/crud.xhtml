@@ -1,0 +1,200 @@
+
+
+<ui:composition
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:ui="jakarta.faces.facelets"
+        xmlns:f="jakarta.faces.core"
+        xmlns:h="jakarta.faces.html"
+        xmlns:p="http://primefaces.org/ui"
+        template="/WEB-INF/faces-templates/layout.xhtml"
+>
+    <ui:param name="title" value="FirebaseRTDB KeySwitch - CRUD"/>
+
+    <ui:param name="internalstyles"
+              value=".KeySwitchs-table-header { display: flex; align-items:center; justify-content: space-between; flex-wrap: wrap; }"/>
+
+    <ui:define name="maincontent">
+
+        <h1 style="font-weight: bold;font-size: 3rem; display: flex;justify-content: space-around">FireBase KeySwitch Database</h1>
+
+        <div class="card">
+            <h:form id="form">
+                <p:growl id="growl" showDetail="true">
+                    <p:autoUpdate/>
+                </p:growl>
+
+                <p:toolbar style="margin-top: 1rem; margin-bottom: 1rem">
+                    <p:toolbarGroup>
+                        <p:commandButton id="createButton"
+                                         value="Add New Switch"
+                                         icon="pi pi-plus"
+                                         actionListener="#{currentKeySwitchCrudView.onOpenNew}"
+                                         update=":dialogs:manage-KeySwitch-content"
+                                         oncomplete="PF('manageKeySwitchDialog').show()"
+                                         styleClass="ui-button-success"
+                                         style="margin-right: .5rem">
+                            <p:resetInput target=":dialogs:manage-KeySwitch-content"/>
+                        </p:commandButton>
+                    </p:toolbarGroup>
+                </p:toolbar>
+
+                <p:dataTable id="dt-KeySwitchs" widgetVar="dtKeySwitchs"
+                             value="#{currentKeySwitchCrudView.keySwitchs}"
+                             var="currentKeySwitch"
+                             reflow="true"
+                             selection="#{currentKeySwitchCrudView.selectedKeySwitch}"
+                             rowKey="#{currentKeySwitch.id}"
+                             paginator="true" rows="10"
+                             paginatorPosition="bottom"
+                                stripedRows="true">
+
+                    <f:facet name="header">
+                        <div class="KeySwitchs-table-header" >
+                            <div style="display:flex; flex-direction: column">
+                            <span style="font-weight: bold; font-size: larger;">Key Switches </span>
+                            <span style="font-size: small; font-weight: lighter; display:flex; justify-content: space-around">(the search fields here will browse specific parameter categories use the general search on the right if you want more broad results!)</span>
+                            </div>
+                            <span class="filter-container ui-input-icon-left">
+                                <i class="pi pi-search"></i>
+                                <p:inputText id="globalFilter" onkeyup="PF('dtKeySwitchs').filter()"
+                                             placeholder="Search for a switch"/>
+                            </span>
+                        </div>
+                    </f:facet>
+
+
+                    <p:column headerText="Switch Name" filterBy="#{currentKeySwitch.switchName}">
+                        <h:outputText value="#{currentKeySwitch.switchName}"/>
+                    </p:column>
+                    <p:column headerText="Switch Company" filterBy="#{currentKeySwitch.company}">
+                        <h:outputText value="#{currentKeySwitch.company}"/>
+                    </p:column>
+                    <p:column headerText="Switch Type" filterBy="#{currentKeySwitch.switchType}">
+                        <h:outputText value="#{currentKeySwitch.switchType}"/>
+                    </p:column>
+                    <p:column headerText="Actuation Force" filterBy="#{currentKeySwitch.actuationForce}">
+                        <h:outputText value="#{currentKeySwitch.actuationForce}"/>
+                    </p:column>
+                    <p:column headerText="Switch Travel" filterBy="#{currentKeySwitch.switchTravel}">
+                        <h:outputText value="#{currentKeySwitch.switchTravel}"/>
+                    </p:column>
+
+                    <p:column exportable="false" ariaHeaderText="Actions">
+                        <p:commandButton icon="pi pi-pencil"
+                                         update=":dialogs:manage-KeySwitch-content"
+                                         oncomplete="PF('manageKeySwitchDialog').show()"
+                                         styleClass="edit-button rounded-button ui-button-success"
+                                         process="@this">
+                            <f:setPropertyActionListener value="#{currentKeySwitch}"
+                                                         target="#{currentKeySwitchCrudView.selectedKeySwitch}"/>
+                            <f:setPropertyActionListener value="#{currentKeySwitch.id}"
+                                                         target="#{currentKeySwitchCrudView.selectedId}"/>
+                            <p:resetInput target=":dialogs:manage-KeySwitch-content"/>
+                        </p:commandButton>
+                        <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash"
+                                         process="@this"
+                                         oncomplete="PF('deleteKeySwitchDialog').show()">
+                            <f:setPropertyActionListener value="#{currentKeySwitch}"
+                                                         target="#{currentKeySwitchCrudView.selectedKeySwitch}"/>
+                            <f:setPropertyActionListener value="#{currentKeySwitch.id}"
+                                                         target="#{currentKeySwitchCrudView.selectedId}"/>
+                        </p:commandButton>
+                    </p:column>
+
+                </p:dataTable>
+            </h:form>
+
+            <h:form id="dialogs">
+                <p:dialog header="KeySwitch Details" showEffect="fade" modal="true" widgetVar="manageKeySwitchDialog"
+                          responsive="true">
+
+                    <p:messages id="messages">
+                        <p:autoUpdate/>
+                    </p:messages>
+
+                    <p:outputPanel id="manage-KeySwitch-content" class="ui-fluid">
+                        <p:outputPanel rendered="#{not empty currentKeySwitchCrudView.selectedKeySwitch}">
+                            <!-- TODO: Add input field for each editable property of the entity -->
+                            <div class="field">
+                                <p:outputLabel for="@next">Switch Name</p:outputLabel>
+                                <p:inputText
+                                        id="switchName"
+                                        value="#{currentKeySwitchCrudView.selectedKeySwitch.switchName}">
+                                </p:inputText>
+                            </div>
+                            <div class="field">
+                                <p:outputLabel for="@next">Manufacturer</p:outputLabel>
+                                <p:inputText
+                                        id="company"
+                                        value="#{currentKeySwitchCrudView.selectedKeySwitch.company}">
+                                </p:inputText>
+                            </div>
+                            <div class="field">
+                                <p:outputLabel for="@next">Switch Type</p:outputLabel>
+                                <p:inputText
+                                        id="switchType"
+                                        value="#{currentKeySwitchCrudView.selectedKeySwitch.switchType}">
+                                </p:inputText>
+                            </div>
+                            <div class="field">
+                                <p:outputLabel for="@next">Actuation Force</p:outputLabel>
+                                <p:inputText
+                                        id="actuationForce"
+                                        value="#{currentKeySwitchCrudView.selectedKeySwitch.actuationForce}">
+                                </p:inputText>
+                            </div>
+                            <div class="field">
+                                <p:outputLabel for="@next">Switch Travel</p:outputLabel>
+                                <p:inputText
+                                        id="switchTravel"
+                                        value="#{currentKeySwitchCrudView.selectedKeySwitch.switchTravel}">
+
+                                </p:inputText>
+                            </div>
+
+                        </p:outputPanel>
+                    </p:outputPanel>
+
+                    <f:facet name="footer">
+                        <p:commandButton value="Save"
+                                         icon="pi pi-check"
+                                         actionListener="#{currentKeySwitchCrudView.onSave}"
+                                         update="manage-KeySwitch-content"
+                                         process="manage-KeySwitch-content @this"/>
+
+                        <p:commandButton value="Generate Data"
+                                         icon="pi pi-calculator"
+                                         actionListener="#{currentKeySwitchCrudView.onGenerateData}"
+                                         update="manage-KeySwitch-content"
+                                         process="@this"/>
+
+                        <p:commandButton value="Cancel"
+                                         icon="pi pi-times"
+                                         onclick="PF('manageKeySwitchDialog').hide()"
+                                         class="ui-button-secondary"
+                                         type="button"/>
+                    </f:facet>
+                </p:dialog>
+
+                <p:confirmDialog widgetVar="deleteKeySwitchDialog" showEffect="fade" width="300"
+                                 message="Delete the KeySwitch?" header="Confirm" severity="warn">
+                    <p:commandButton value="Yes" icon="pi pi-check"
+                                     actionListener="#{currentKeySwitchCrudView.onDelete}"
+                                     process="@this"
+                                     oncomplete="PF('deleteKeySwitchDialog').hide()"/>
+                    <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
+                                     onclick="PF('deleteKeySwitchDialog').hide()"/>
+                </p:confirmDialog>
+
+                <p:confirmDialog global="true" showEffect="fade" width="300">
+                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check"/>
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-secondary"
+                                     icon="pi pi-times"/>
+                </p:confirmDialog>
+            </h:form>
+
+        </div>
+
+    </ui:define>
+
+</ui:composition>
